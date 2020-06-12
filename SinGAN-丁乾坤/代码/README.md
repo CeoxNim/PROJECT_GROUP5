@@ -3,7 +3,7 @@
 
 #### [ICCV 2019]"SinGAN: Learning a Generative Model from a Single Natural Image" 
 
-#### Citation
+#### Citation （来自原文的citation部分）
 
 If you use this code for your research, please cite our paper:
 
