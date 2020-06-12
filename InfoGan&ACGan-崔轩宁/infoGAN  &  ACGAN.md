@@ -12,7 +12,7 @@ $@author$  崔轩宁$(CeoxNim)$
 
 标准的$GAN$网络中，生成数据是不可控的，无法通过控制噪声$z$的某个维度来控制生成数据的语义特征。$infoGAN$的提出便是希望通过$latent~code$的设置，使网络可以学到能解释的特征表示，并且这种特征是未标签化的，即无需人为设置。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605101904939.png" alt="image-20200605101904939" style="zoom:50%;" />
+<img src="img\1.png" style="zoom:50%;" />
 
 PS: 出于训练的可操性，我们在$MNIST$数据集上进行训练及相关的调试工作，但当然，算法的核心思想是通用的，将其迁移到其它数据集在算力足够的情况下不是难事。
 
@@ -22,7 +22,7 @@ PS: 出于训练的可操性，我们在$MNIST$数据集上进行训练及相关
 
 将原始的噪声输入分为两部分，一部分仍为原来的噪声，另一部分为由若干个$latent~variables$拼接而成的$latent~code$，记作$c$，这部分用来标识生成图片的不同的特征维度。如果我们使得生成图片与$c$之间具有很强的相关性，我们就可以近似理解为生成的图片可以根据$c$的调整而调整，即学到了相应特征。图解如下：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605103437232.png" alt="image-20200605103437232" style="zoom:67%;" />
+<img src="img\2.png" style="zoom:67%;" />
 
 我们可以看到，如果不考虑左下角的潜在特征向量$c$及右下角的神经网络$Q$，即为原始的$GAN$模型。神经网络$Q$起到特征提取的作用，通过$Q$的处理得到一个和$c$同样规格的向量，如果处理后得到的向量与$c$有很强的相关性，则可以说明所生成的图片很好地体现了$latent~code$所代表的特征。
 
@@ -56,7 +56,7 @@ $$
 
 在自以为理解上述原理流程后进行代码编写，效果如下：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605105617757.png" alt="image-20200605105617757" style="zoom: 67%;" />
+<img src="img\3.png" style="zoom:67%;" />
 
 可以看到主要存在两个问题：
 
@@ -67,11 +67,11 @@ $$
 
 首先对其进行调参，主要包括更改神经网络架构设置及其中参数设置，以及目标函数中$\lambda$的调整，效果如下：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605105955341.png" alt="image-20200605105955341" style="zoom:67%;" />
+<img src="img\4.png" style="zoom:67%;" />
 
 可以看到，相比于之前略有好转，但是仍未达到理想中的预期。私以为是因为自己对神经网络的架构理解得并不透彻，导致调参效果不尽人意，考虑到每次调整后都要重新训练模型，耗时太长，且确实不懂该如何调节性价比更优，便参考了网上的代码，对神经网络层面的架构作出修改，以及对损失函数做出了一定调整（这是因为考虑到数字识别是一个离散的变量，如果采用$one-hot$编码，则其非$0$即$1$，从而直接$softmax$后利用交叉熵来优化要更好一些），效果如下：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605110418887.png" alt="image-20200605110418887" style="zoom:67%;" />
+<img src="img\5.png" style="zoom:67%;" />
 
 PS：这里更换了图片输出方式，觉得一张图上好看些而且方便比较233
 
@@ -81,19 +81,19 @@ PS：这里更换了图片输出方式，觉得一张图上好看些而且方便
 
 考虑图片不能正确按顺序生成的原因，相同的特征被识别出来并被聚集到一起，这一点没有问题
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605110839685.png" alt="image-20200605110839685" style="zoom:67%;" />
+<img src="img\6.png" style="zoom:67%;" />
 
 问题在于机器并不知道所聚集的特征在人类的语境下被称作什么，举例言之如下
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605111016226.png" alt="image-20200605111016226" style="zoom:67%;" />
+<img src="img\7.png" style="zoom:67%;" />
 
 于是乎问题的解决就需要让网络在猫咪图片和猫咪标签之间建立联系，该如何建立呢？我们没有办法直接告诉网络这个东西叫做猫咪，因为文字本就是一类抽象的符号，他需要与实体建立对应联系才可。因此为了建立这种联系，我们可以先将正确的图片与标签对应，这就为其明确了每个标签的含义，在后续的学习过程中也就会按照我们预期的顺序进行
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605111416135.png" alt="image-20200605111416135" style="zoom:67%;" />
+<img src="img\8.png" style="zoom:67%;" />
 
 采用如上原理，我们容易将源代码修改得到如下效果
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605111745986.png" alt="image-20200605111745986" style="zoom:67%;" />
+<img src="img\9.png" style="zoom:67%;" />
 
 可以看到按照预期$0-9$的顺序生成了图片，问题二得到基本解决。
 
@@ -113,7 +113,7 @@ PS：这里更换了图片输出方式，觉得一张图上好看些而且方便
 
 **效果汇总**
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605113005227.png" alt="image-20200605113005227" style="zoom:67%;" />
+<img src="img\10.png" style="zoom:67%;" />
 
 PS：这里为了报告的全面性简单写了一个原始的$GAN$做比，但并未仔细调参，所有效果只能说是差强人意。
 
@@ -123,9 +123,11 @@ PS：这里为了报告的全面性简单写了一个原始的$GAN$做比，但�
 
 项目构成如下：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200605113423569.png" alt="image-20200605113423569" style="zoom:67%;" />
+<img src="img\11.png" style="zoom:67%;" />
 
-$MNIST \_ data$为下载到本地的$MNIST$数据包，$Output$为之前训练好的结果，$read\_me$中为具体运行环境及指令
+$MNIST \_ data$为下载到本地的$MNIST$数据包，$Output$为之前训练好的结果，$img$为存储该报告所需图片
+
+$InfoGAN~\&~ACGAN.md$ 即该文档为文字性报告。
 
 运行指令：
 
