@@ -70,6 +70,5 @@ python SR.py --input_name <LR_image_file_name>
 ```
 This will automatically train a SinGAN model correspond to 4x upsampling factor (if not exist already).
 For different SR factors, please specify it using the parametr `--sr_factor` when calling the function.
-SinGAN's results on BSD100 dataset can be download from the 'Downloads' folder.
 
 
