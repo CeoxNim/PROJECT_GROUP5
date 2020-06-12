@@ -16,6 +16,8 @@ If you use this code for your research, please cite our paper:
 }
 ```
 
+如果想要训练自己的数据，请将图片放到/Input/Images目录中，并按照下面的说明运行相应的代码，训练的模型将会存储在/TrainedModels中，生成的结果会在/Output路径中
+
 ## Code
 
 ### Install dependencies
