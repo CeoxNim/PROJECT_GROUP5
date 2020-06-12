@@ -3,6 +3,12 @@
 
 #### [ICCV 2019]"SinGAN: Learning a Generative Model from a Single Natural Image" 
 
+
+#### 备注
+
+由于训练模型太多太大，输出结果太多，无法上传到repo中，因此我将这些结果放到了北大网盘中，如果想要使用，可以直接从网盘中下载下来并放到相应的文件夹下，就可以进行操作，链接如下：[https://disk.pku.edu.cn:443/link/610184F51F6DCB4E694849E5C3F8C72F](https://disk.pku.edu.cn/link/610184F51F6DCB4E694849E5C3F8C72F) 有效期限：2020-07-11 23:59
+
+
 #### Citation （来自原文的citation部分）
 
 If you use this code for your research, please cite our paper:
